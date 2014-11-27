@@ -60,6 +60,9 @@ class TaskForm(forms.ModelForm):
             initial = kwargs.get('initial', {})
             initial['keywords'] = kwargs['instance'].keywords_list
             kwargs['initial'] = initial
+            task_id = kwargs.pop('task_id', None)
+            if task_id:
+                self.base_fields['next_task'].queryset = self.base_fields['next_task'].queryset.exclude(id=task_id)
         super(TaskForm, self).__init__(*args, **kwargs)
 
     def _process_keywords(self, creator):
