@@ -371,9 +371,10 @@ class UpdateTaskView(LoginRequiredMixin, MyStaffUserRequiredMixin, generic.Updat
     form_class = TaskForm
     template_name = 'tasks/form.html'
 
-    def get_form(self, form_class):
-        """ Override get_form to pass task_id to the constructor."""
-        return form_class(task_id=self.get_object().id, **self.get_form_kwargs())
+    def get_form_kwargs(self):
+        kwargs = super(UpdateTaskView, self).get_form_kwargs()
+        kwargs.update(self.kwargs)
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(UpdateTaskView, self).get_context_data(*args, **kwargs)
